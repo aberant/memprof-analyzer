@@ -1,0 +1,2 @@
+class IClassEntry < ClassEntry
+end
