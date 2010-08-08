@@ -1,9 +1,9 @@
 class CountReport
-  def self.count_per_type!( collection )
+  def self.count_by_type( collection )
     count_query(collection, "type")
   end
 
-  def self.count_per_class_name( collection )
+  def self.count_by_class_name( collection )
     count_query( collection, "class_name")
   end
 

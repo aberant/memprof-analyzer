@@ -37,6 +37,4 @@ class Commands
   def to_a
     @commands.keys
   end
-
-
 end
