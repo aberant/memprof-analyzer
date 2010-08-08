@@ -1,7 +1,7 @@
 class InteractiveShell
-  def initialize( db )
+  def initialize( db_conn )
     @commands = %w( quit inspect search references ).abbrev
-    @db = db
+    @db_conn = db_conn
   end
 
   def run!
@@ -10,12 +10,11 @@ class InteractiveShell
       case @commands[line.first]
 
       when "quit"
-        QuitCommand.new( @db, line ).execute!
+        QuitCommand.new( @db_conn, line ).execute!
       when "search"
-        SearchCommand.new( @db, line ).execute!
+        SearchCommand.new( @db_conn, line ).execute!
       when "inspect"
-        id = line[1]
-        @db["rails"].find("_id" => id).each{|obj| y obj }
+        InspectCommand.new( @db_conn, line).execute!
       when "references"
         @db["rails_ref"].find("refs" => line[1]).each do |obj|
           @db["rails"].find("_id" => obj["_id"]).each do |rails_item|
