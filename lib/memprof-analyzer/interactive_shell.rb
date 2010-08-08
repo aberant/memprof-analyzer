@@ -1,31 +1,20 @@
 class InteractiveShell
   def initialize( db_conn )
-    @commands = %w( quit inspect search references ).abbrev
     @db_conn = db_conn
+
+    @commands = Commands.new
+    @commands.load_commands
+    @abbreviations = @commands.to_a.abbrev
   end
 
   def run!
-
     while line = grab_line
-      case @commands[line.first]
-
-      when "quit"
-        QuitCommand.new( @db_conn, line ).execute!
-      when "search"
-        SearchCommand.new( @db_conn, line ).execute!
-      when "inspect"
-        InspectCommand.new( @db_conn, line ).execute!
-      when "references"
-        ReferencesCommand.new( @db_conn, line ).execute!
-      else
-        p "unknown command"
-      end
-
+      command_klass = @commands.find_command( @abbreviations[ line.first ])
+      command_klass.new( @db_conn, line ).execute!
     end
   end
 
   def grab_line
     Readline.readline("> ", true).strip.split(" ")
   end
-
 end
