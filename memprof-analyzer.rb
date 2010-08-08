@@ -1,95 +1,54 @@
 require 'mongo'
 require 'json'
+require 'readline'
+require 'abbrev'
+require 'yaml'
 
 require 'memprof-analyzer/entry'
 require 'memprof-analyzer/json_ref_formatter'
-require 'memprof-analyzer/reference_reports'
+require 'memprof-analyzer/reports/reference_report'
+require 'memprof-analyzer/reports/count_report'
 
-
-def each_row_for_type( type, collection )
-  result = collection.find( :type => type )
-  result.collect do |row|
-    yield row
-  end.compact
-end
-
-def each_row_for_class_name( class_name, collection )
-  result = collection.find( :class_name => class_name )
-  result.collect do |row|
-    yield row
-  end.compact
-end
-
-def array_references( collection )
-  each_row_for_type( "array", collection ) do |row|
-    JsonRefFormatter.new(ArrayEntry.new(row)).to_json
-  end
-end
-
-def hash_references( collection )
-  each_row_for_type( "hash", collection ) do |row|
-    JsonRefFormatter.new(HashEntry.new(row)).to_json
-  end
-end
-
-def class_references( collection )
-  each_row_for_type( "class", collection ) do |row|
-    JsonRefFormatter.new(ClassEntry.new(row)).to_json
-  end
-end
-
-def iclass_references( collection )
-  each_row_for_type( "iclass", collection ) do |row|
-    JsonRefFormatter.new(IClassEntry.new(row)).to_json
-  end
-end
-
-def module_references( collection )
-  each_row_for_type( "module", collection ) do |row|
-    JsonRefFormatter.new(ModuleEntry.new(row)).to_json
-  end
-end
-
-def node_references( collection )
-  each_row_for_type( "node", collection ) do |row|
-    node = NodeEntry.new(row)
-    JsonRefFormatter.new(node).to_json
-  end
-end
 
 
 
 db = Mongo::Connection.new("localhost").db("memprof")
 rails = db["rails"]
+rails_ref = db["rails_ref"]
 
-# result = rails.find( :type => "data" )
-# result.each do |row|
-#   entry = Entry.new( row )
-#   json = JsonRefFormatter.new(entry).to_json
-#   puts json if json
-# end
 
-# result = rails.find( "_id" => "0x4728270")
-# while result.count > 0
-#   entry = result.to_a.first
-#   puts entry.inspect
-#   id =  entry["super"]
-#   result = rails.find( "_id" => id )
-# end
-result = rails.find( "_id" => "0x609af78")
-while result.count > 0
-  entry = result.to_a.first
-  puts entry.inspect
-  id =  entry["super"]
-  result = rails.find( "_id" => id )
+def grab_line
+  Readline.readline("> ", true).strip.split(" ")
 end
 
+commands = %w( quit inspect search references ).abbrev
 
-#
-# puts module_references( rails )
 
-# each_row_for_class_name( "Proc", rails ) do |row|
-#   # puts row # if node.data?
-#   node = ProcEntry.new(row)
-#   puts JsonRefFormatter.new(node).to_json
-# end
+stty_save = `stty -g`.chomp
+trap('INT') { system('stty', stty_save); exit }
+
+
+
+while line = grab_line
+  case commands[line.first]
+
+  when "quit"
+    exit
+  when "search"
+    rails.find(line[1].to_sym => line[2]).each{|obj| y obj; puts }
+
+  when "inspect"
+    id = line[1]
+    rails.find("_id" => id).each{|obj| y obj }
+  when "references"
+    rails_ref.find("refs" => line[1]).each do |obj|
+      rails.find("_id" => obj["_id"]).each do |rails_item|
+        puts "#{rails_item["_id"]} - #{rails_item["type"]} #{rails_item["name"]}"
+      end
+    end
+  else
+    p "unknown command"
+  end
+
+end
+

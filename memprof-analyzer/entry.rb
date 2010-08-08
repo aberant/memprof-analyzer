@@ -1,3 +1,4 @@
+# entry reference extractor
 class Entry
   attr_reader :data, :memprof_id
 
