@@ -1,0 +1,12 @@
+= Memprof Analyzer
+
+http://github.com/ice799/memprof
+
+== DESCRIPTION
+
+this is an early alpha release of a tool to help analyze your memprof data.  it's a basic REPL with a few simple commands.
+
+  quit
+  inspect ( object_id )
+  references ( object_id )
+  search ( search_key match_data )
