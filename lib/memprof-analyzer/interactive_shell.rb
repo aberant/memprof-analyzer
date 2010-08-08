@@ -14,13 +14,9 @@ class InteractiveShell
       when "search"
         SearchCommand.new( @db_conn, line ).execute!
       when "inspect"
-        InspectCommand.new( @db_conn, line).execute!
+        InspectCommand.new( @db_conn, line ).execute!
       when "references"
-        @db["rails_ref"].find("refs" => line[1]).each do |obj|
-          @db["rails"].find("_id" => obj["_id"]).each do |rails_item|
-            puts "#{rails_item["_id"]} - #{rails_item["type"]} #{rails_item["name"]}"
-          end
-        end
+        ReferencesCommand.new( @db_conn, line ).execute!
       else
         p "unknown command"
       end
