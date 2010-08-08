@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+project_dir = File.expand_path( File.join( File.dirname(__FILE__), '..', 'lib'))
+
+$LOAD_PATH.unshift(project_dir) unless $LOAD_PATH.include?(project_dir)
+
+require 'memprof-analyzer'
+
+db = Mongo::Connection.new("localhost").db("memprof")
+
+InteractiveShell.new(db).run!
+
