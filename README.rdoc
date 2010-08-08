@@ -4,9 +4,19 @@ http://github.com/ice799/memprof
 
 == DESCRIPTION
 
-this is an early alpha release of a tool to help analyze your memprof data.  it's a basic REPL with a few simple commands.
+this is an early alpha release of a tool to help analyze your memprof data with mongo db.  it's a basic REPL with a few simple commands.
 
   quit
   inspect ( object_id )
   references ( object_id )
   search ( search_key match_data )
+
+== TODO
+
+  add help command
+  automate importing of memprof data
+  generate mongo indexes
+  automate generation of refs table
+  namespace everything
+  make it a gem
+  understand what all this data means
