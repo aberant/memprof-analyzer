@@ -13,10 +13,10 @@ this is an early alpha release of a tool to help analyze your memprof data with 
 
 == TODO
 
-  add help command
-  automate importing of memprof data
-  generate mongo indexes
-  automate generation of refs table
-  namespace everything
-  make it a gem
-  understand what all this data means
+* add help command
+* automate importing of memprof data
+* generate mongo indexes
+* automate generation of refs table
+* namespace everything
+* make it a gem
+* understand what all this data means
