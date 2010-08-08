@@ -17,7 +17,7 @@ private
       [*key], # key
       {}, # condition
       {:count => 0}, # initial
-      "function(obj, out) { out.count++ }", # reduce js function
+      "function(obj, out) { out.count++ }" # reduce js function
     )
   end
 end
