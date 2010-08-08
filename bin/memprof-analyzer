@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(project_dir) unless $LOAD_PATH.include?(project_dir)
 
 require 'memprof-analyzer'
 
-db = Mongo::Connection.new("localhost").db("memprof")
+db_conn = DatabaseConnection.new( :host => "localhost", :database => "memprof")
 
-InteractiveShell.new(db).run!
+InteractiveShell.new(db_conn).run!
 

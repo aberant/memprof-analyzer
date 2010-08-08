@@ -10,10 +10,9 @@ class InteractiveShell
       case @commands[line.first]
 
       when "quit"
-        QuitCommand.new( line ).execute!
+        QuitCommand.new( @db, line ).execute!
       when "search"
-        @db["rails"].find(line[1].to_sym => line[2]).each{|obj| y obj; puts }
-
+        SearchCommand.new( @db, line ).execute!
       when "inspect"
         id = line[1]
         @db["rails"].find("_id" => id).each{|obj| y obj }

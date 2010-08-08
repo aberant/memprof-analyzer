@@ -1,5 +1,5 @@
 class QuitCommand
-  def initialize( command_line )
+  def initialize( db, user_input )
   end
 
   def execute!
