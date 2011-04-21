@@ -1,4 +1,6 @@
 class InteractiveShell
+  attr_reader :commands
+
   def initialize( db_conn )
     @db_conn = db_conn
 
@@ -10,7 +12,7 @@ class InteractiveShell
   def run!
     while line = grab_line
       command_klass = @commands.find_command( @abbreviations[ line.first ])
-      command_klass.new( @db_conn, line ).execute!
+      command_klass.new( @db_conn, line, self ).execute!
     end
   end
 

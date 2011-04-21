@@ -1,12 +1,19 @@
 class CountCommand < CommandBase
+  def self.help
+    "Show counts by type. Valid types are: #{report_types.join(", ")}"
+  end
+
+  def self.report_types
+    CountReport.singleton_methods.select{|meth| meth.match(/count_by_/)}.collect{|r| r.to_s[9..-1]}
+  end
+
   def after_initialize
     @rails = db.memprof
     @report_type = user_input[1]
   end
 
   def execute!
-    count_reports = CountReport.singleton_methods.select{|meth| meth.match(/count_by_/)}
-    return puts "invalid count report type" unless count_reports.include?( "count_by_#{@report_type}".to_sym )
+    return puts "invalid count report type" unless self.class.report_types.include?( @report_type )
 
     raw_counts = CountReport.send("count_by_#{@report_type}", @rails)
     count_hash = raw_counts.map {|r| Hash[r["class_name"], r["count"]]}

@@ -1,4 +1,8 @@
 class ReferencesCommand < CommandBase
+  def self.help
+    "Show references held by the object with the specified id"
+  end
+
   def after_initialize
     @rails = db.memprof
     @refs = db.references

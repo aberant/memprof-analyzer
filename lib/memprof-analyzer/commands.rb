@@ -27,4 +27,13 @@ class Commands
   def to_a
     @commands.keys
   end
+
+  def show_help
+    max = @commands.keys.collect(&:length).max
+
+    puts "Commands:"
+    @commands.keys.sort.each do |c|
+      puts "  #{c.ljust(max)} #{find_command(c).help}"
+    end
+  end
 end

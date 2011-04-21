@@ -1,4 +1,8 @@
 class SearchCommand < CommandBase
+  def self.help
+    "Open ended find with the specified key and value"
+  end
+
   def after_initialize
     @rails = db.memprof
     @search_key = user_input[1].to_sym
