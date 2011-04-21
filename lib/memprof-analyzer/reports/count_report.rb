@@ -1,23 +1,31 @@
 class CountReport
   def self.count_by_type( collection )
-    count_query(collection, "type")
+    build( collection, "type" )
   end
 
   def self.count_by_class_name( collection )
-    count_query( collection, "class_name")
+    build( collection, "class_name" )
   end
 
   def self.count_by_file_and_line( collection )
-    count_query( collection, ["file", "line"])
+    build( collection, ["file", "line"] )
   end
 
 private
+  def self.build(collection, key)
+    key = [*key]
+    raw_counts = count_query(collection, key)
+    raw_counts.each_with_object({}) do |raw, hash|
+      final_key = key.map{|k| raw[k] }.join(":")
+      hash[final_key] = raw["count"]
+    end
+  end
+
   def self.count_query(collection, key)
     collection.group(
-      [*key], # key
-      {}, # condition
-      {:count => 0}, # initial
-      "function(obj, out) { out.count++ }" # reduce js function
+      :key => key,
+      :initial => {:count => 0},
+      :reduce => "function(obj, out) { out.count++ }"
     )
   end
 end
