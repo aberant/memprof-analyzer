@@ -1,8 +1,6 @@
-class QuitCommand
-  def initialize( db, user_input )
-  end
-
+class QuitCommand < CommandBase
   def execute!
     Kernel.exit
   end
+
 end

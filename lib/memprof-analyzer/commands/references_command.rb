@@ -1,5 +1,5 @@
-class ReferencesCommand
-  def initialize( db, user_input )
+class ReferencesCommand < CommandBase
+  def after_initialize
     @rails = db.memprof
     @refs = db.references
 

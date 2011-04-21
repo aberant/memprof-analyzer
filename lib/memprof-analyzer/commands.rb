@@ -1,13 +1,3 @@
-# special treatment for a special class
-# hmm... where do i put it?
-class UnknownCommand
-  def initialize( db, user_input )  end
-
-  def execute!
-    puts "unknown command"
-  end
-end
-
 class Commands
   def initialize()
     @commands = Hash.new(UnknownCommand)

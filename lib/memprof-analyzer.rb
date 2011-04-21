@@ -6,6 +6,7 @@ require 'yaml'
 
 require 'memprof-analyzer/core_ext/string'
 
+require 'memprof-analyzer/command_base'
 require 'memprof-analyzer/commands'
 require 'memprof-analyzer/interactive_shell'
 

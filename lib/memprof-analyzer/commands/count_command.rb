@@ -1,5 +1,5 @@
-class CountCommand
-  def initialize( db, user_input )
+class CountCommand < CommandBase
+  def after_initialize
     @rails = db.memprof
     @report_type = user_input[1]
   end
