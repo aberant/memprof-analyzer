@@ -7,6 +7,10 @@ class CountReport
     build( collection, "class_name" )
   end
 
+  def self.count_by_file( collection )
+    build( collection, "file" )
+  end
+
   def self.count_by_file_and_line( collection )
     build( collection, ["file", "line"] )
   end

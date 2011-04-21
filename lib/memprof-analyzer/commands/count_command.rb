@@ -1,6 +1,6 @@
 class CountCommand < CommandBase
   def self.help
-    "Show counts by type. Valid types are: #{report_types.join(", ")}"
+    "Show counts by type. Valid types are: #{report_types.sort.join(", ")}"
   end
 
   def self.report_types
