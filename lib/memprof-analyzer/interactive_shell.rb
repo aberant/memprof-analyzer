@@ -11,6 +11,7 @@ class InteractiveShell
 
   def run!
     while line = grab_line
+      next if line.empty?
       command_klass = @commands.find_command( @abbreviations[ line.first ])
       command_klass.new( @db_conn, line, self ).execute!
     end
