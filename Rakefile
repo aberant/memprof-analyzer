@@ -1,12 +1,7 @@
-require 'spec/rake/spectask'
-
+require 'rspec/core/rake_task'
 
 task :default => :spec
 
-Spec::Rake::SpecTask.new do |t|
-  t.ruby_opts = ["-rubygems"]
-  t.libs << 'lib'
-  t.warning = false
-  t.rcov = false
-  t.spec_opts = ["--colour"]
+RSpec::Core::RakeTask.new do |task|
+  task.pattern = 'spec/**/*_spec.rb'
 end
